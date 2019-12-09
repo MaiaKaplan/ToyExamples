@@ -1,16 +1,18 @@
 
 
-## The goal is to have a store the sells yarn, has patterns, and people who buy stuff
+## Goal: a store the sells yarn, has patterns, and people who buy stuff
+
+## As learning experience: note questions, examples of what doesn't work, etc
+
 
 class Knitter():
     
-    spent = 0
+    spent = 0  # attributes initialized (wc?) for all instances
     owns = []
     name = ''
-    skill_level = None
 
     def __init__(self, name, skill_level):
-        self.name = name
+        self.name = name  # Will overwrite empty string
         self.skill_level = skill_level
 
     def buy_stuff(self, item, cost):
@@ -39,12 +41,29 @@ class Products():
         self.moolah_made =+ cost
 
     def stock(self):
-        return self.items, self.yarn_colors, self.patterns
+        return self.items_sold, self.yarn_colors, self.patterns
 
 # next goal is to have the person buy the items and have the stock decrease
+
+class Yarn(Products):
+    inventory = {}  #will not overwrite self.inventory inherited from Products
+    newest_addition = ''
+    def __init__(self, minimum):
+
+        self.inventory = {
+            'balls': ['marino', 'alpaca'],
+            'scraps': ['blue', 'grey', 'mix']
+        }
+        self.minimum = minimum
+
+    def order_more(self, new_yarn, scrap=False):
+        self.inventory['balls'].append(new_yarn)
+        self.newest_addition = new_yarn
+        inventory = {}  # will not overwrite
+
 
 def purchase(store, person, thing, cost):
 
     person.buy_stuff(thing, cost)  # track individual's inventory
     store.sold_stuff(thing, cost)  # track store's inventory
-    # print(store.stock) 
+    # print(store.stock) ## q: why does this return a bound method?
